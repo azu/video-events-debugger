@@ -15,19 +15,20 @@ export interface DevTools {
 }
 
 export interface DevToolsExtension {
-    connect(options: RemoteReduxDevToolsOptions): DevTools;
+    connect(options: {}): DevTools;
 }
 
 // extends
 export interface DevToolsWindow extends Window {
-    devToolsExtension?: DevToolsExtension;
+    __REDUX_DEVTOOLS_EXTENSION__: DevToolsExtension;
 }
 
 /**
  * @type {boolean}
  */
-export const isIntegratedDevTools = (window: DevToolsWindow): window is DevToolsWindow => {
-    if (typeof window !== "undefined" && window.devToolsExtension) {
+export const isIntegratedDevTools = (window: Window): window is DevToolsWindow => {
+    const devWindow = window as DevToolsWindow;
+    if (typeof devWindow !== "undefined" && devWindow.__REDUX_DEVTOOLS_EXTENSION__) {
         return true;
     }
     return false;
@@ -57,9 +58,9 @@ export class VideoEventsDevTool {
      * @param {Object} options redux-devtools-extension options
      * @see http://extension.remotedev.io/docs/API/Arguments.html
      */
-    connect(options = DefaultDevToolsOptions) {
+    connect(options: {} = DefaultDevToolsOptions) {
         if (isIntegratedDevTools(window)) {
-            this.devTools = window.devToolsExtension.connect(options);
+            this.devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect(options);
         } else {
             throw new Error("Fail to connect redux devTools");
         }
@@ -69,7 +70,7 @@ export class VideoEventsDevTool {
      * initialize state
      * @param {*} state
      */
-    init(state) {
+    init(state: any) {
         if (this.devTools) {
             this.devTools.init(state);
         }
@@ -80,7 +81,10 @@ export class VideoEventsDevTool {
      * @param {function(message: Object)} handler
      * @returns {function()} unsubscribe function
      */
-    subscribe(handler) {
+    subscribe(handler: (message: {}) => void): () => void {
+        if (!this.devTools) {
+            return () => {};
+        }
         return this.devTools.subscribe(handler);
     }
 
@@ -89,7 +93,7 @@ export class VideoEventsDevTool {
      * @param {*} state
      * @see http://extension.remotedev.io/docs/API/Methods.html
      */
-    send(action, state) {
+    send(action: object, state: any) {
         if (this.devTools) {
             this.devTools.send(action, state);
         }
@@ -99,7 +103,7 @@ export class VideoEventsDevTool {
      * @param {*} message
      * @see http://extension.remotedev.io/docs/API/Methods.html
      */
-    error(message) {
+    error(message: any) {
         if (this.devTools) {
             this.devTools.error(message);
         }

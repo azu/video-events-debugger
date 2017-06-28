@@ -14,14 +14,17 @@ export function isVideoElement(v: any): v is HTMLVideoElement {
     return false;
 }
 
-export function inject(videoSelector: string) {
+export function inject(videoSelector?: string) {
+    if (!videoSelector) {
+        throw new Error("selector should be input");
+    }
     const element = document.querySelector(videoSelector);
     if (isVideoElement(element)) {
         const observer = new VideoEventObserver(element);
-        observer.onChange((key, event) => {
-            console.groupCollapsed(key);
-            console.log(event);
-            console.groupEnd(key);
+        observer.onChange((_key, _event) => {
+            // console.groupCollapsed(key);
+            // console.log(event);
+            // console.groupEnd(key);
         });
         observer.start();
         return;

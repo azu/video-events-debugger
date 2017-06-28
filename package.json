@@ -14,6 +14,7 @@
   "version": "1.0.0",
   "description": "HTML5 Video element events debugging tools.",
   "main": "lib/video-events-debugger.js",
+  "types": "lib/video-events-debugger.js",
   "scripts": {
     "precommit": "lint-staged",
     "postcommit": "git reset",
@@ -21,6 +22,7 @@
     "prepublish": "npm run --if-present build",
     "start": "npm-run-all clean --parallel watch:css server",
     "server": "cross-env NODE_ENV=development webpack-dev-server --hot --content-base ./public --open",
+    "lib": "tsc -p .",
     "build:js": "cross-env NODE_ENV=production webpack --progress -p",
     "build:css": "postcss --config postcss.config.js src/index.css -o public/build/build.css",
     "build": "npm-run-all clean --parallel build:*",

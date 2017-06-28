@@ -174,10 +174,7 @@ export type VideoEventObserverRecord = {
     [// Event : count
     EventName in keyof typeof VideoEventTypes]: number
 };
-export type VideoPropertyRecord = {
-    [// property name : value
-    EventName in keyof typeof MediaProperties]: any
-};
+export type VideoPropertyRecord = { [EventName in keyof typeof MediaProperties]: any };
 
 export class VideoEventObserver extends EventEmitter {
     private record: VideoEventObserverRecord;
@@ -190,24 +187,24 @@ export class VideoEventObserver extends EventEmitter {
     private createInitialRecord = (): VideoEventObserverRecord => {
         const initialCount = 0;
         const keys = Object.keys(VideoEventTypes);
-        const result = {};
+        const result: any = {};
         keys.forEach(key => {
             result[key] = initialCount;
         });
         return result as VideoEventObserverRecord;
     };
 
-    private onHandler = (keyName: string, event: Event) => {
+    private onHandler = (keyName: keyof typeof VideoEventTypes, event: Event) => {
         this.record[keyName]++;
         this.emit("__VideoEventObserver__CHANGE__", keyName, event);
     };
 
     private createMediaProperties = (video: HTMLVideoElement): VideoPropertyRecord => {
         const keys = Object.keys(MediaProperties);
-        const result = {};
-        keys.forEach(key => {
+        const result: any = {};
+        keys.forEach((key: keyof typeof MediaProperties) => {
             try {
-                result[key] = video[key];
+                result[key] = (video as any)[key];
             } catch (error) {
                 result[key] = "<NOT ACCESSABLE>";
             }
@@ -231,7 +228,7 @@ export class VideoEventObserver extends EventEmitter {
     }
 
     start() {
-        Object.keys(VideoEventTypes).forEach(keyName => {
+        Object.keys(VideoEventTypes).forEach((keyName: keyof typeof VideoEventTypes) => {
             const eventHandler = (event: Event) => {
                 this.onHandler(keyName, event);
             };
