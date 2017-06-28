@@ -3,9 +3,15 @@
 import { RemoteReduxDevToolsOptions } from "remote-redux-devtools";
 
 export interface DevTools {
+    init(state: any): void;
+
     send(..._: any[]): void;
 
     error(error: Error): void;
+
+    subscribe(handler: (message: {}) => void): () => void;
+
+    disconnect(): void;
 }
 
 export interface DevToolsExtension {
@@ -20,65 +26,19 @@ export interface DevToolsWindow extends Window {
 /**
  * @type {boolean}
  */
-const withDevTools = (window: DevToolsWindow): window is DevToolsWindow => {
+export const isIntegratedDevTools = (window: DevToolsWindow): window is DevToolsWindow => {
     if (typeof window !== "undefined" && window.devToolsExtension) {
         return true;
     }
     return false;
 };
-
-/**
- * This connect from Almin's context to DevTools
- *
- * - If the state is changed by dispatching
- *   - When anyone payload is dispatched and the UseCase did executed, send to devTools.
- *   - When anyone payload is dispatched and the state is changed, send to devTools
- * - If the state is changed by UseCase
- *   - When anyone UseCase is completed, send to devTools
- *
- * @param {Context} alminContext
- * @param {*} devTools
- */
-const contextToDevTools = (alminContext, devTools: DevToolsExtension) => {
-    /**
-     * @type {Object[]}
-     */
-    let currentDispatching = [];
-    const sendDispatched = () => {
-        if (currentDispatching.length > 0) {
-            const currentState = alminContext.getState();
-            currentDispatching.forEach(payload => {
-                devTools.send(payload.type, currentState);
-            });
-            currentDispatching = [];
-        }
-    };
-    alminContext.onDispatch((payload, meta) => {
-        currentDispatching.push(payload);
-    });
-    alminContext.onChange(() => {
-        sendDispatched();
-    });
-    alminContext.onDidExecuteEachUseCase(() => {
-        sendDispatched();
-    });
-    alminContext.onCompleteEachUseCase((payload, meta) => {
-        requestAnimationFrame(() => {
-            devTools.send(`UseCase:${meta.useCase.name}`, alminContext.getState());
-        });
-    });
-    alminContext.onErrorDispatch(payload => {
-        devTools.error(payload.error.message);
-    });
-};
-
 const DefaultDevToolsOptions = {
     features: {
         pause: true, // start/pause recording of dispatched actions
         lock: true, // lock/unlock dispatching actions and side effects
         persist: false, // persist states on page reloading
         export: true, // export history of actions in a file
-        import: "almin-log", // import history of actions from a file
+        import: "video-events-debugger-log", // import history of actions from a file
         jump: false, // jump back and forth (time travelling)
         skip: false, // skip (cancel) actions
         reorder: false, // drag and drop actions in the history list
@@ -87,15 +47,10 @@ const DefaultDevToolsOptions = {
     }
 };
 
-module.exports = class AlminDevTools {
-    devTools: DevTools;
+export class VideoEventsDevTool {
+    devTools?: DevTools;
 
-    /**
-     * @param {Context} alminContext
-     */
-    constructor() {
-        this.devTools = undefined;
-    }
+    constructor() {}
 
     /**
      * connect to devTools
@@ -103,21 +58,21 @@ module.exports = class AlminDevTools {
      * @see http://extension.remotedev.io/docs/API/Arguments.html
      */
     connect(options = DefaultDevToolsOptions) {
-        if (withDevTools(window)) {
+        if (isIntegratedDevTools(window)) {
             this.devTools = window.devToolsExtension.connect(options);
+        } else {
+            throw new Error("Fail to connect redux devTools");
         }
-        contextToDevTools(this.alminContext, this.devTools);
     }
 
     /**
      * initialize state
      * @param {*} state
      */
-    init(state = this.alminContext.getState()) {
-        if (!withDevTools) {
-            return;
+    init(state) {
+        if (this.devTools) {
+            this.devTools.init(state);
         }
-        this.devTools.init(state);
     }
 
     /**
@@ -135,10 +90,9 @@ module.exports = class AlminDevTools {
      * @see http://extension.remotedev.io/docs/API/Methods.html
      */
     send(action, state) {
-        if (!withDevTools) {
-            return;
+        if (this.devTools) {
+            this.devTools.send(action, state);
         }
-        this.devTools.send(action, state);
     }
 
     /**
@@ -146,19 +100,17 @@ module.exports = class AlminDevTools {
      * @see http://extension.remotedev.io/docs/API/Methods.html
      */
     error(message) {
-        if (!withDevTools) {
-            return;
+        if (this.devTools) {
+            this.devTools.error(message);
         }
-        this.devTools.error(message);
     }
 
     /**
      * disconnect to devTools
      */
     disconnect() {
-        if (!withDevTools) {
-            return;
+        if (this.devTools) {
+            this.devTools.disconnect();
         }
-        this.devTools.disconnect();
     }
-};
+}

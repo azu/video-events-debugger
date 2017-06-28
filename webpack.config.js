@@ -6,6 +6,8 @@ const distDir = path.join(__dirname, "public", "build");
 module.exports = {
     entry: {
         "bundle": "./src/index.ts",
+        "redux-bundle": "./src/redux-boot.ts",
+        "bookmarklet-devTools": "./src/index-redux-devtools.ts",
         "bookmarklet": "./src/index-bookmarklet.ts"
     },
 

@@ -203,11 +203,11 @@ export class VideoEventObserver extends EventEmitter {
     };
 
     private createMediaProperties = (video: HTMLVideoElement): VideoPropertyRecord => {
-        const keys = Object.keys(VideoEventTypes);
+        const keys = Object.keys(MediaProperties);
         const result = {};
         keys.forEach(key => {
             try {
-                result[key] = JSON.stringify(video[key]);
+                result[key] = video[key];
             } catch (error) {
                 result[key] = "<NOT ACCESSABLE>";
             }
