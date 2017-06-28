@@ -4,9 +4,10 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const distDir = path.join(__dirname, "public", "build");
 module.exports = {
-    entry: [
-        "./src/index.ts"
-    ],
+    entry: {
+        "bundle": "./src/index.ts",
+        "bookmarklet": "./src/index-bookmarklet.ts"
+    },
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx']
@@ -16,7 +17,7 @@ module.exports = {
     output: {
         path: distDir,
         publicPath: "/build/",
-        filename: "bundle.js"
+        filename: "[name].js"
     },
     module: {
         rules: [

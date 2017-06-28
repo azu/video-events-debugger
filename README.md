@@ -10,7 +10,11 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+### Bookmarklet
+
+1. Run bookmarklet
+2. Input target video selector
+3. See developer tools console
 
 ## Changelog
 

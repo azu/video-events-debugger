@@ -15,6 +15,8 @@
   "description": "HTML5 Video element events debugging tools.",
   "main": "lib/video-events-debugger.js",
   "scripts": {
+    "precommit": "lint-staged",
+    "postcommit": "git reset",
     "test": "mocha test/",
     "prepublish": "npm run --if-present build",
     "start": "npm-run-all clean --parallel watch:css server",
@@ -26,6 +28,12 @@
     "watch:css": "chokidar --initial 'src/**/*.css' -c 'npm run build:css'",
     "watch": "npm-run-all clean --parallel watch:*",
     "clean": "rimraf public/build && mkdirp public/build"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,css,js}": [
+      "prettier --write --print-width 120 --tab-width 4",
+      "git add"
+    ]
   },
   "keywords": [
     "video",
@@ -57,7 +65,9 @@
     "chokidar-cli": "^1.2.0",
     "cross-env": "^5.0.1",
     "espower-typescript": "^8.0.0",
+    "husky": "^0.14.1",
     "json-loader": "^0.5.4",
+    "lint-staged": "^4.0.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.4.2",
     "npm-run-all": "^4.0.2",
@@ -68,12 +78,14 @@
     "postcss-easy-import": "^2.1.0",
     "postcss-reporter": "^4.0.0",
     "power-assert": "^1.4.4",
+    "prettier": "^1.5.1",
     "rimraf": "^2.6.1",
     "typescript": "^2.3.4",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
+    "@types/remote-redux-devtools": "^0.5.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   }

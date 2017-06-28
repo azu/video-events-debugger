@@ -7,7 +7,7 @@ export function isVideoElement(v: any): v is HTMLVideoElement {
     }
     if (v.nodeType === 1) {
         const node = v as HTMLElement;
-        if (node.nodeName.toLowerCase() == 'video') {
+        if (node.nodeName.toLowerCase() == "video") {
             return true;
         }
     }
@@ -20,7 +20,7 @@ export function inject(videoSelector: string) {
         const observer = new VideoEventObserver(element);
         observer.onChange((key, event) => {
             console.groupCollapsed(key);
-            console.table(event);
+            console.log(event);
             console.groupEnd(key);
         });
         observer.start();
