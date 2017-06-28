@@ -16,6 +16,10 @@ Install with [npm](https://www.npmjs.com/):
 2. Input target video selector
 3. See developer tools console
 
+### remote-redux-devtools
+
+- [ ] Integrate with [remote-redux-devtools](https://github.com/zalmoxisus/remote-redux-devtools "remote-redux-devtools")
+
 ## Changelog
 
 See [Releases page](https://github.com/azu/video-events-debugger/releases).
