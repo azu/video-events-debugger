@@ -16,8 +16,12 @@ if (!isVideoElement(element)) {
     }
     const observer = new VideoEventObserver(element);
     const devTools = new VideoEventsDevTool();
-    observer.onChange((_key: string, event: Event) => {
-        devTools.send(event, observer.getMediaProperties());
+    observer.onChange((key: string, event: Event) => {
+        const action = {
+            type: key,
+            ...event
+        };
+        devTools.send(action, observer.getMediaProperties());
     });
     observer.start();
     devTools.connect();
