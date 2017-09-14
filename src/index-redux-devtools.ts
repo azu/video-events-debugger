@@ -1,6 +1,6 @@
 // MIT © 2017 azu
 import { isVideoElement } from "./boot";
-import { VideoEventObserver } from "./VideoEventObserver";
+import { VideoEventObserver } from "./observer/VideoEventObserver";
 import { isIntegratedDevTools, VideoEventsDevTool } from "./redux/devtools-integration";
 
 const inputSelector = prompt("Please input CSS selector for video element", "video");

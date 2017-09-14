@@ -1,5 +1,5 @@
 // MIT © 2017 azu
-import { VideoEventObserver } from "./VideoEventObserver";
+import { VideoEventObserver } from "./observer/VideoEventObserver";
 
 export function isVideoElement(v: any): v is HTMLVideoElement {
     if (v === undefined || v === null) {

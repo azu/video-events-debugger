@@ -93,7 +93,7 @@ export class VideoEventsDevTool {
      * @param {*} state
      * @see http://extension.remotedev.io/docs/API/Methods.html
      */
-    send(action: object, state: any) {
+    send(action: object, state?: any) {
         if (this.devTools) {
             this.devTools.send(action, state);
         }
