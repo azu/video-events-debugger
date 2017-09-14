@@ -18,7 +18,6 @@
   "scripts": {
     "precommit": "lint-staged",
     "postcommit": "git reset",
-    "test": "mocha test/",
     "prepublish": "npm run --if-present build",
     "start": "npm-run-all clean --parallel watch:css server",
     "server": "cross-env NODE_ENV=development webpack-dev-server --hot --content-base ./public --open",
