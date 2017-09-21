@@ -1,6 +1,6 @@
 # video-events-debugger
 
-HTML5 Video element events debugging tools.
+HTML5 Video element and Hls.js events debugging tools.
 
 ## Supports
 
@@ -25,7 +25,7 @@ injectDevTools(video: HTMLVideoElement);
 injectConsole(video: HTMLVideoElement);
 ```
 
-Hls.js:
+Hls.js:(experimental)
 
 ```js
 import {injectHlsJsDebugger} from "video-events-debugger"
@@ -36,7 +36,7 @@ Steps:
 
 1. Install [Redux-DevTool extension](https://github.com/zalmoxisus/redux-devtools-extension) to your browser
 2. Open DevTools
-3. Open "Redux" tav
+3. Open "Redux" tab
 
 ### Bookmarklet
 
