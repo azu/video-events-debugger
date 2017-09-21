@@ -2,6 +2,11 @@
 
 HTML5 Video element events debugging tools.
 
+## Supports
+
+- `<video>` element
+- [hls.js](https://github.com/video-dev/hls.js "hls.js")
+
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
@@ -9,6 +14,23 @@ Install with [npm](https://www.npmjs.com/):
     npm install video-events-debugger
 
 ## Usage
+
+
+Video Element:
+
+```js
+import {injectDevTools, } from "video-events-debugger"
+injectDevTools(video: HTMLVideoElement);
+// to console
+injectConsole(video: HTMLVideoElement);
+```
+
+Hls.js:
+
+```js
+import {injectHlsJsDebugger} from "video-events-debugger"
+injectHlsJsDebugger(hls: Hls);
+```
 
 ### Bookmarklet
 
