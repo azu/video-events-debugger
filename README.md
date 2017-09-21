@@ -32,7 +32,15 @@ import {injectHlsJsDebugger} from "video-events-debugger"
 injectHlsJsDebugger(hls: Hls);
 ```
 
+Steps:
+
+1. Install [Redux-DevTool extension](https://github.com/zalmoxisus/redux-devtools-extension) to your browser
+2. Open DevTools
+3. Open "Redux" tav
+
 ### Bookmarklet
+
+- [ ] Welcome to PR
 
 1. Run bookmarklet
 2. Input target video selector
