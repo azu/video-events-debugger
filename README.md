@@ -19,9 +19,10 @@ Install with [npm](https://www.npmjs.com/):
 Video Element:
 
 ```js
-import {injectDevTools, } from "video-events-debugger"
+import {injectDevTools, injectConsole} from "video-events-debugger"
+// to Redux DevTools
 injectDevTools(video: HTMLVideoElement);
-// to console
+// to Browser's console
 injectConsole(video: HTMLVideoElement);
 ```
 
