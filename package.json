@@ -28,7 +28,8 @@
     "watch:js": "cross-env NODE_ENV=development webpack --watch",
     "watch:css": "chokidar --initial 'src/**/*.css' -c 'npm run build:css'",
     "watch": "npm-run-all clean --parallel watch:*",
-    "clean": "rimraf public/build && mkdirp public/build"
+    "clean": "rimraf public/build && mkdirp public/build",
+    "gh-pages": "npm run build && gh-pages --dist ./public"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,css,js}": [
@@ -66,6 +67,7 @@
     "chokidar-cli": "^1.2.0",
     "cross-env": "^5.0.1",
     "espower-typescript": "^8.0.0",
+    "gh-pages": "^1.1.0",
     "hls.js": "^0.7.10",
     "husky": "^0.14.1",
     "json-loader": "^0.5.4",
